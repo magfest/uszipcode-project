@@ -2,7 +2,6 @@
 
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
-import sqlalchemy_mate as sam
 from uszipcode.model import SimpleZipcode, ComprehensiveZipcode
 
 db_file_path = "/Users/sanhehu/.crawl_uszipcode/comprehensive.sqlite"
@@ -19,7 +18,6 @@ with orm.Session(engine) as ses:
         Zipcode.population.between(10000, 50000)
     ).limit(10)
     res = ses.execute(stmt)
-    print(sam.pt.from_result(res))
 
     # stmt = sa.select(Zipcode).limit(20)
     # res = ses.execute(stmt)
@@ -30,7 +28,7 @@ with orm.Session(engine) as ses:
 import json
 from pathlib_mate import Path
 
-l = sam.selecting.select_single_column(engine, Zipcode.__table__.c.zipcode)
-
+with engine.connect() as connection:
+    l = connection.execute(sa.select(Zipcode.__table__.c.zipcode)all()
 p = Path(__file__).change(new_basename="data.json")
 p.write_text(json.dumps(l))

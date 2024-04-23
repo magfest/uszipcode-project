@@ -5,7 +5,6 @@ Count number of zipcode for each type.
 """
 
 import sqlalchemy as sa
-import sqlalchemy_mate as sam
 from uszipcode.search import SearchEngine, SimpleZipcode
 
 with SearchEngine(
@@ -20,4 +19,3 @@ with SearchEngine(
         .group_by(SimpleZipcode.zipcode_type) \
         .order_by(sa.func.count(SimpleZipcode.zipcode).desc())
     res = sr.ses.execute(stmt)
-    print(sam.pt.from_result(res))
